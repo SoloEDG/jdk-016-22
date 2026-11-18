@@ -31,6 +31,7 @@ import {
   usePlayer,
 } from "../features/sequence";
 import { Viewport, ObservePanel, setView } from "../features/observe";
+import { ManualExport } from "../features/manual";
 const doc = reactive(createDocument(papers[0]!, makeSteps(papers[0]!)));
 const pose = computed(() => solvePose(doc.paper, doc.angles)),
   hinges = computed(() => hingePositions(doc.paper, pose.value));
@@ -145,7 +146,10 @@ function capture() {
             @angle="changeAngle(doc, $event)"
             @direction="toggleDirection(doc)"
             @target="applyTarget(doc)"
-          /><ObservePanel :doc="doc" />
+          /><ObservePanel :doc="doc" /><ManualExport
+            :doc="doc"
+            @notify="notify"
+          />
         </aside>
       </div>
       <SequencePanel
@@ -172,7 +176,7 @@ function capture() {
           选择纸张与颜色，点选折痕后拖动角度滑杆。父纸面转动时，关联纸面会一起运动。
         </p>
         <p>
-          下方步骤可还原对应形态，也可保存当前角度后播放。拖动画面旋转视角，滚轮缩放，下载按钮可保存当前观察图。
+          下方步骤可还原对应形态，也可保存当前角度后播放。拖动画面旋转视角，滚轮缩放，下载按钮可保存当前观察图；右侧面板可导出多页折叠说明书（含展开图、编号折痕与方向箭头）。
         </p>
         <p>作品保留在本次会话中，刷新会重新开始。</p>
         <button class="primary" @click="help = false">开始探索 ↗</button>
